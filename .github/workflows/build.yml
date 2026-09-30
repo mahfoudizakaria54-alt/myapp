@@ -10,17 +10,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev
-          pip install buildozer cython
+          pip install buildozer cython==0.29.36
       - name: Build APK
-        run: |
-          sed -i '/^android.accept_sdk_license/d' buildozer.spec
-          sed -i 's/^\[app\]/[app]\nandroid.accept_sdk_license = True/' buildozer.spec
-          buildozer -v android debug
+        run: buildozer -v android debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
